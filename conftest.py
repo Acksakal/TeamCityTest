@@ -64,11 +64,42 @@ def project_data(super_admin):
     def _project_data():
         project = ProjectData.create_project_data()
         project_id_pool.append(project.id)
+        return project
+
+    yield _project_data
+
+    for project_id in project_id_pool:
+        super_admin.api_object.project_api.clean_up_project(project_id)
+
+
+@pytest.fixture
+def build_data(super_admin):
+    project_id_pool = []
+
+    def _build_data():
+        project = ProjectData.create_project_data()
+        project_id_pool.append(project.id)
+        build = BuildData.create_build_data(project.id)
+        return project, build
+
+    yield _build_data
+
+    for project_id in project_id_pool:
+        super_admin.api_object.project_api.clean_up_project(project_id)
+
+
+@pytest.fixture
+def run_build(super_admin):
+    project_id_pool = []
+
+    def _run_build():
+        project = ProjectData.create_project_data()
+        project_id_pool.append(project.id)
         build = BuildData.create_build_data(project.id)
         run_build = BuildData.create_run_build_data(build.id)
         return project, build, run_build
 
-    yield _project_data
+    yield _run_build
 
     for project_id in project_id_pool:
         super_admin.api_object.project_api.clean_up_project(project_id)

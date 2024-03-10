@@ -23,8 +23,3 @@ class BuildAPI(CustomRequester):
     def check_if_queue_is_empty(self):
         return self.send_request("GET",
                                  "/app/rest/buildQueue")
-
-    def delete_build(self, build_id, expected_status=HTTPStatus.NO_CONTENT):
-        return self.send_request("DELETE",
-                                 f"/app/rest/buildTypes/id:{build_id}",
-                                 expected_status=expected_status)

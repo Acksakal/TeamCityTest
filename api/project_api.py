@@ -28,4 +28,4 @@ class ProjectAPI(CustomRequester):
         self.delete_project(created_project_id)
         get_project_response = self.get_project().json()
         project_ids = [project.get('id', {}) for project in get_project_response.get('project', [])]
-        assert created_project_id not in project_ids, 'ID of the created projects is still in the project list'
+        assert created_project_id not in project_ids, 'ID of the created project is still in the projects list'
